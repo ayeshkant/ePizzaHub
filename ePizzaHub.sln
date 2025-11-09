@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.txt = ReadMe.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{A7442739-77BB-4586-80C0-20F8A55A3936}"
 EndProject
@@ -19,13 +22,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{94757D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{01E3F884-83CF-4F78-B241-4C02C667862E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePizzaHub.Infrastructure", "ePizzaHub.Infrastructure\ePizzaHub.Infrastructure.csproj", "{FC2B6D9C-F2FD-4F79-AAB2-3FA1283AFE0A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePizzaHub.Domain", "ePizzaHub.Domain\ePizzaHub.Domain.csproj", "{5D2DE45B-5D80-4440-87BF-76F42FA8FD15}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePizzaHub.Application", "ePizzaHub.Application\ePizzaHub.Application.csproj", "{F005AD5F-770E-4491-86A2-A731813757C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePizzaHub.API", "ePizzaHub.API\ePizzaHub.API.csproj", "{92D306DF-42F4-4039-97C3-1027F4C7CD8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePizzaHub.Infrastructure", "ePizzaHub.Infrastructure\ePizzaHub.Infrastructure.csproj", "{FC55FF4B-45C2-4A9D-8F3E-6EF746B80829}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +40,6 @@ Global
 		{9ADDA02A-3058-4466-875C-E18746AC9F17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9ADDA02A-3058-4466-875C-E18746AC9F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9ADDA02A-3058-4466-875C-E18746AC9F17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC2B6D9C-F2FD-4F79-AAB2-3FA1283AFE0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC2B6D9C-F2FD-4F79-AAB2-3FA1283AFE0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC2B6D9C-F2FD-4F79-AAB2-3FA1283AFE0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC2B6D9C-F2FD-4F79-AAB2-3FA1283AFE0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D2DE45B-5D80-4440-87BF-76F42FA8FD15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D2DE45B-5D80-4440-87BF-76F42FA8FD15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D2DE45B-5D80-4440-87BF-76F42FA8FD15}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,6 +52,10 @@ Global
 		{92D306DF-42F4-4039-97C3-1027F4C7CD8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92D306DF-42F4-4039-97C3-1027F4C7CD8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92D306DF-42F4-4039-97C3-1027F4C7CD8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC55FF4B-45C2-4A9D-8F3E-6EF746B80829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC55FF4B-45C2-4A9D-8F3E-6EF746B80829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC55FF4B-45C2-4A9D-8F3E-6EF746B80829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC55FF4B-45C2-4A9D-8F3E-6EF746B80829}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,10 +66,10 @@ Global
 		{699EF519-2BF2-469B-95E2-863AB7A04E5C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{94757DCE-0523-4E54-BEF3-57B73D05F834} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{01E3F884-83CF-4F78-B241-4C02C667862E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{FC2B6D9C-F2FD-4F79-AAB2-3FA1283AFE0A} = {01E3F884-83CF-4F78-B241-4C02C667862E}
 		{5D2DE45B-5D80-4440-87BF-76F42FA8FD15} = {94757DCE-0523-4E54-BEF3-57B73D05F834}
 		{F005AD5F-770E-4491-86A2-A731813757C7} = {699EF519-2BF2-469B-95E2-863AB7A04E5C}
 		{92D306DF-42F4-4039-97C3-1027F4C7CD8F} = {3F0C8764-CE81-46A9-A62D-40B11AD03721}
+		{FC55FF4B-45C2-4A9D-8F3E-6EF746B80829} = {01E3F884-83CF-4F78-B241-4C02C667862E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE574828-0FA3-4C74-9BE6-56600BD2CEA8}
