@@ -22,5 +22,11 @@ namespace ePizzaHub.Infrastructure.Repositories
             var response= _dBContext.Set<TEntity>();
             return await response.ProjectTo<TDomain>(_mapper.ConfigurationProvider).ToListAsync();                
         }
+
+        public async Task<TDomain> GetByIdAsync(object id)
+        {
+            var response = await _dBContext.Set<TEntity>().FindAsync(id);
+            return response == null?null : _mapper.Map<TDomain>(response);
+        }
     }
 }

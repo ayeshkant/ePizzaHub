@@ -9,5 +9,6 @@ namespace ePizzaHub.Domain.Interfaces
     public interface IGenericRepository<TDomain> where TDomain : class
     {
         Task<IEnumerable<TDomain>> GetAllAsync();
+        Task<TDomain> GetByIdAsync(object id);
     }
 }

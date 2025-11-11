@@ -9,6 +9,5 @@ namespace ePizzaHub.Domain.Interfaces
 {
     public interface IItemRepository: IGenericRepository<ItemDomain>
     {
-        Task<ItemDomain> GetItemByIdAsync(int id);
     }
 }
