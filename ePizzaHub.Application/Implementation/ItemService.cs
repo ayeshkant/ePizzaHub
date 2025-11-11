@@ -25,5 +25,10 @@ namespace ePizzaHub.Application.Implementation
             var response = await _itemRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<ItemResponseDto>>(response);
         }
+        public async Task<ItemResponseDto> GetItemByIdAsync(int id)
+        {
+            var response = await _itemRepository.GetItemByIdAsync(id);
+            return _mapper.Map<ItemResponseDto>(response);
+        }
     }
 }

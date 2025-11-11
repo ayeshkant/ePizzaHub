@@ -21,5 +21,11 @@ namespace ePizzaHub.API.Controllers
             var response = await _itemService.GetAllItemsAsync();
             return Ok(response);
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<ItemResponseDto>>> GetById(int id)
+        {
+            var response = await _itemService.GetItemByIdAsync(id);
+            return Ok(response);
+        }
     }
 }

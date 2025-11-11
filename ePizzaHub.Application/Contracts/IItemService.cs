@@ -10,5 +10,6 @@ namespace ePizzaHub.Application.Contracts
     public interface IItemService
     {
         Task<IEnumerable<ItemResponseDto>> GetAllItemsAsync();
+        Task<ItemResponseDto> GetItemByIdAsync(int id);
     }
 }
