@@ -1,4 +1,6 @@
 
+using ePizzaHub.Application;
+using ePizzaHub.Infrastructure;
 namespace ePizzaHub.API
 {
     public class Program
@@ -12,6 +14,12 @@ namespace ePizzaHub.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddAutoMapper(typeof(ApplicationAssemblyMarker).Assembly);
+            builder.Services.AddApplication();
+
+            builder.Services.AddAutoMapper(typeof(InfrastructureAssemblyMarker).Assembly);
+            builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             var app = builder.Build();
 

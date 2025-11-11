@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Request\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ePizzaHub.Domain\ePizzaHub.Domain.csproj" />
+    <ProjectReference Include="..\ePizzaHub.Infrastructure\ePizzaHub.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
