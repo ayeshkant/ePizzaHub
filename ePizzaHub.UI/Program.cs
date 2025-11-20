@@ -1,3 +1,5 @@
+using ePizzaHub.UI.Constants;
+
 namespace ePizzaHub.UI
 {
     public class Program
@@ -8,6 +10,12 @@ namespace ePizzaHub.UI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddHttpClient(ApplicationConstants.ePizzaApiClient, options =>
+            {
+                options.BaseAddress = new Uri(builder.Configuration["EPizzaAPI:baseUrl"]!);
+                options.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
 
             var app = builder.Build();
 

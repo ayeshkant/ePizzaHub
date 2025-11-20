@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using ePizzaHub.Domain.Interfaces;
 using ePizzaHub.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ePizzaHub.Infrastructure.Repositories
 {
@@ -17,6 +18,16 @@ namespace ePizzaHub.Infrastructure.Repositories
             _dBContext = dBContext;
             _mapper = mapper;
         }
+
+        public async Task<IEnumerable<TDomain>> FindAsync(Expression<Func<TDomain, bool>> predicate)
+        {
+            var response = await _dBContext.Set<TEntity>()
+                                     .ProjectTo<TDomain>(_mapper.ConfigurationProvider)
+                                     .Where(predicate)
+                                     .ToListAsync();
+            return response;
+        }
+
         public async Task<IEnumerable<TDomain>> GetAllAsync()
         {
             var response= _dBContext.Set<TEntity>();

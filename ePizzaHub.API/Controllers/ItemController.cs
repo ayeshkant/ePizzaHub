@@ -16,16 +16,18 @@ namespace ePizzaHub.API.Controllers
             _itemService = itemService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemResponseDto>>> Get()
+        public async Task<ActionResult> Get()
         {
             var response = await _itemService.GetAllItemsAsync();
-            return Ok(response);
+            var commonResponse = new ApiResponseModelDto<IEnumerable<ItemResponseDto>>(true,"Data fetched", response);
+            return Ok(commonResponse);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<ItemResponseDto>> GetById(int id)
+        public async Task<ActionResult> GetById(int id)
         {
             var response = await _itemService.GetItemByIdAsync(id);
-            return Ok(response);
+            var commonResponse = new ApiResponseModelDto<ItemResponseDto>(true, "Data fetched", response);
+            return Ok(commonResponse);
         }
     }
 }

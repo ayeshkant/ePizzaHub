@@ -1,20 +1,31 @@
-using System.Diagnostics;
+using ePizzaHub.UI.Constants;
 using ePizzaHub.UI.Models;
+using ePizzaHub.UI.Models.Response;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ePizzaHub.UI.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
+            _httpClientFactory = httpClientFactory;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var httpClient = _httpClientFactory.CreateClient(ApplicationConstants.ePizzaApiClient);
+            var response = await httpClient.GetFromJsonAsync<IEnumerable<ItemResponseDto>>("/api/item");
+            if (response is not null)
+            {
+                return View(response);
+            }
+
             return View();
         }
 
