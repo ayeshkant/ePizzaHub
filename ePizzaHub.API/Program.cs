@@ -1,4 +1,5 @@
 
+using ePizzaHub.API.Middlewares;
 using ePizzaHub.Application;
 using ePizzaHub.Infrastructure;
 namespace ePizzaHub.API
@@ -35,6 +36,7 @@ namespace ePizzaHub.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseMiddleware<CommonResponseMiddleware>();
 
 
             app.MapControllers();

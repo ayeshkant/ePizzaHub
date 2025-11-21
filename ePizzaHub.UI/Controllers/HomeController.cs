@@ -20,10 +20,10 @@ namespace ePizzaHub.UI.Controllers
         public async Task<IActionResult> Index()
         {
             var httpClient = _httpClientFactory.CreateClient(ApplicationConstants.ePizzaApiClient);
-            var response = await httpClient.GetFromJsonAsync<IEnumerable<ItemResponseDto>>("/api/item");
-            if (response is not null)
+            var response = await httpClient.GetFromJsonAsync<ApiResponseModelDto<IEnumerable<ItemResponseDto>>>("/api/item");
+            if (response is not null && response.IsSuccess)
             {
-                return View(response);
+                return View(response.Data);
             }
 
             return View();

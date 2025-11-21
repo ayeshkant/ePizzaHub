@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ePizzaHub.Application.DTOs.Response
+namespace ePizzaHub.UI.Models.Response
 {
     public class ApiResponseModelDto<T>
     {

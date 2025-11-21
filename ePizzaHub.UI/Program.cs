@@ -32,6 +32,7 @@ namespace ePizzaHub.UI
 
             app.UseAuthorization();
 
+
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
