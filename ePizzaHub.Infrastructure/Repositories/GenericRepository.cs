@@ -11,8 +11,8 @@ namespace ePizzaHub.Infrastructure.Repositories
         where TDomain : class
         where TEntity : class
     {
-        private readonly ePizzaHubDBContext _dBContext;
-        private readonly IMapper _mapper;
+        protected readonly ePizzaHubDBContext _dBContext;
+        protected readonly IMapper _mapper;
         public GenericRepository(ePizzaHubDBContext dBContext, IMapper mapper)
         {
             _dBContext = dBContext;
@@ -38,6 +38,25 @@ namespace ePizzaHub.Infrastructure.Repositories
         {
             var response = await _dBContext.Set<TEntity>().FindAsync(id);
             return response == null?null : _mapper.Map<TDomain>(response);
+        }
+        public async Task<int> CommitAsync()
+        {
+            return await _dBContext.SaveChangesAsync();
+        }
+        public async Task AddAsync(TDomain domainEntity)
+        {
+            var entity = _mapper.Map<TEntity>(domainEntity);
+
+            await _dBContext.Set<TEntity>().AddAsync(entity);
+        }
+
+        public async Task UpdateAsync(TDomain domainEntity, object id)
+        {
+            var existingEntity = await _dBContext.Set<TEntity>().FindAsync(id);
+            if (existingEntity == null)
+                throw new KeyNotFoundException($"Entity with id {id} not found.");
+
+            _mapper.Map(domainEntity, existingEntity);
         }
     }
 }

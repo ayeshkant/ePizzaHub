@@ -12,5 +12,9 @@ namespace ePizzaHub.Domain.Interfaces
         Task<IEnumerable<TDomain>> GetAllAsync();
         Task<TDomain> GetByIdAsync(object id);
         Task<IEnumerable<TDomain>> FindAsync(Expression<Func<TDomain, bool>> predicate);
+        Task AddAsync(TDomain domainEntity);
+        Task<int> CommitAsync();
+
+        Task UpdateAsync(TDomain domainEntity, object id);
     }
 }

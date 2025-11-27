@@ -17,6 +17,8 @@ namespace ePizzaHub.Infrastructure
         {
             // Add AutoMapper profiles from this assembly
             services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
             services.AddDbContext<ePizzaHubDBContext>(options =>
             {
                 options.UseSqlServer(connectionString);
