@@ -16,6 +16,8 @@ namespace ePizzaHub.Application
             // Add AutoMapper profiles from this assembly
             services.AddScoped<IItemService, ItemService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
             // Register other application services here
             // services.AddTransient<IItemService, ItemService>();
             return services;

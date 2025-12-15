@@ -19,6 +19,7 @@ namespace ePizzaHub.Infrastructure
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddDbContext<ePizzaHubDBContext>(options =>
             {
                 options.UseSqlServer(connectionString);
