@@ -18,7 +18,9 @@ namespace ePizzaHub.API.Controllers
         [Route("get/{userName}/{password}")]
         public async Task<IActionResult> GetToken(string userName, string password)
         {
-            return Ok();
+            var response=await _tokenGeneratorService.GenerateToken(userName, password);
+
+            return Ok(response);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace ePizzaHub.Application.Implementation
         public async Task<UserDomain> GetUserAsync(string userName)
         {
             var user= await _userRepository.FindAsync(x => x.Email.Equals(userName));
+            
             return user.FirstOrDefault();
         }
 
