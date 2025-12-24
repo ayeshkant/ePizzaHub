@@ -19,8 +19,8 @@ namespace ePizzaHub.API.Controllers
         [Route("register-user")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto user)
         {
-            await _userService.RegisterUserAsync(user);
-            return Ok();
+            var response=await _userService.RegisterUserAsync(user);
+            return Ok(response);
         }
     }
 }

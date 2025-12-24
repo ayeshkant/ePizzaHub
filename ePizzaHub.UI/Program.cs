@@ -1,4 +1,5 @@
 using ePizzaHub.UI.Constants;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ePizzaHub.UI
 {
@@ -10,6 +11,17 @@ namespace ePizzaHub.UI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSession();
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Login/Login";
+                    options.LogoutPath = "/Login/Logout";
+                });
+
+            builder.Services.AddAuthorization();
 
             builder.Services.AddHttpClient(ApplicationConstants.ePizzaApiClient, options =>
             {
@@ -30,6 +42,8 @@ namespace ePizzaHub.UI
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseSession();
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
