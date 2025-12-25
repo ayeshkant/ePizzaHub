@@ -36,21 +36,32 @@
                                 </svg>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Login" asp-action="Login">
-                                Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Login" asp-action="Logout">
-                                Logout
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="RegisterUser" asp-action="Register">
-                                SignUp
-                            </a>
-                        </li>
+                        @if (CurrentUser!=null)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-dark-emphasis">Welcome @CurrentUser.Name</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Login" asp-action="Logout">
+                                    Logout
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Login" asp-action="Login">
+                                    Login
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="RegisterUser" asp-action="Register">
+                                    SignUp
+                                </a>
+                            </li>
+                        }
+                        
                     </ul>
                 </div>
             </div>
