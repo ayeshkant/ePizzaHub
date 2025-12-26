@@ -5,5 +5,7 @@
         void SetToken(string token);
         void SetRefreshToken(string refreshToken);
         string GetToken();
+        DateTime? GetTokenExpiry(string accessToken);
+        Task GetRefreshTokenAsync(string accessToken, string refreshToken);
     }
 }

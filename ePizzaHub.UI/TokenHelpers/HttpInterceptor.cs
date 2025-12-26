@@ -10,16 +10,23 @@ namespace ePizzaHub.UI.TokenHelpers
         {
             _tokenService = tokenService;
         }
-        protected override Task<HttpResponseMessage> SendAsync(
+        protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
             var token = _tokenService.GetToken();
+
             if (!string.IsNullOrEmpty(token))
             {
+                var tokenExpiryTime = _tokenService.GetTokenExpiry(token);
+                if (tokenExpiryTime<=DateTime.UtcNow.AddMinutes(2))
+                {
+                    await _tokenService.GetRefreshTokenAsync(token, "");
+                }
+
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
-            return base.SendAsync(request, cancellationToken);
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }

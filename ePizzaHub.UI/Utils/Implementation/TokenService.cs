@@ -1,4 +1,5 @@
 ﻿using ePizzaHub.UI.Utils.Contract;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ePizzaHub.UI.Utils.Implementation
 {
@@ -10,6 +11,12 @@ namespace ePizzaHub.UI.Utils.Implementation
         {
             _httpContextAccessor = httpContextAccessor;
         }
+
+        public Task GetRefreshTokenAsync(string accessToken, string refreshToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetToken()
         {
             var context = _httpContextAccessor.HttpContext;
@@ -18,6 +25,20 @@ namespace ePizzaHub.UI.Utils.Implementation
             if (context.Request.Cookies.TryGetValue("access-token", out var token))
                 return token;
             return string.Empty;
+        }
+
+        public DateTime? GetTokenExpiry(string accessToken)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token=handler.ReadJwtToken(accessToken);
+            var expiry = token.Payload.Expiration;
+
+            if (expiry.HasValue)
+            {
+                var tokenExpiry = DateTimeOffset.FromUnixTimeMilliseconds(expiry.Value).UtcDateTime;
+                return tokenExpiry;
+            }
+            return null;
         }
 
         public void SetRefreshToken(string refreshToken)
