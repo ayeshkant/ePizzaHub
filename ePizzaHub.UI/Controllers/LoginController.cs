@@ -1,6 +1,7 @@
 ﻿using ePizzaHub.UI.Constants;
 using ePizzaHub.UI.Models.Response;
 using ePizzaHub.UI.Models.ViewModels;
+using ePizzaHub.UI.Utils.Contract;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace ePizzaHub.UI.Controllers
     public class LoginController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ITokenService _tokenService;
 
-        public LoginController(IHttpClientFactory httpClientFactory)
+        public LoginController(IHttpClientFactory httpClientFactory,ITokenService tokenService)
         {
             _httpClientFactory = httpClientFactory;
+            _tokenService = tokenService;
         }
         [HttpGet]
         public IActionResult Login()
@@ -33,6 +36,7 @@ namespace ePizzaHub.UI.Controllers
 
                 if (response is not null && response.IsSuccess)
                 {
+                    _tokenService.SetToken(response.Data.AccessToken);
                     var claims=await ProcessToken(response.Data.AccessToken);
                     return RedirectToAction("Index","Home");
                 }

@@ -1,4 +1,7 @@
 using ePizzaHub.UI.Constants;
+using ePizzaHub.UI.TokenHelpers;
+using ePizzaHub.UI.Utils.Contract;
+using ePizzaHub.UI.Utils.Implementation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ePizzaHub.UI
@@ -11,7 +14,7 @@ namespace ePizzaHub.UI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddSession();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -23,11 +26,14 @@ namespace ePizzaHub.UI
 
             builder.Services.AddAuthorization();
 
+            builder.Services.AddScoped<HttpInterceptor>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+
             builder.Services.AddHttpClient(ApplicationConstants.ePizzaApiClient, options =>
             {
                 options.BaseAddress = new Uri(builder.Configuration["EPizzaAPI:baseUrl"]!);
                 options.DefaultRequestHeaders.Add("Accept", "application/json");
-            });
+            }).AddHttpMessageHandler<HttpInterceptor>();
 
             var app = builder.Build();
 

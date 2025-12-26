@@ -1,4 +1,5 @@
-﻿using ePizzaHub.Application.DTOs.Response;
+﻿using ePizzaHub.Application.DTOs.Request;
+using ePizzaHub.Application.DTOs.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace ePizzaHub.Application.Contracts
     public interface ITokenGeneratorService
     {
         Task<TokenResponseDto> GenerateToken(string userName, string password);
+        Task<TokenResponseDto> GenerateRefreshTokenAsync(RefreshTokenRequestDto request);
     }
 }

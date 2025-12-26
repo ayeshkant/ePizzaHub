@@ -14,7 +14,8 @@ namespace ePizzaHub.API
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            builder.Services.AddOpenApi()
+                .RegisterJwt(builder.Configuration);
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddAutoMapper(typeof(ApplicationAssemblyMarker).Assembly);
@@ -35,6 +36,7 @@ namespace ePizzaHub.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<CommonResponseMiddleware>();
 

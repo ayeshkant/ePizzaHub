@@ -1,16 +1,20 @@
 ﻿using ePizzaHub.Application.Contracts;
 using ePizzaHub.Application.CustomExceptions;
+using ePizzaHub.Application.DTOs.Request;
 using ePizzaHub.Application.DTOs.Response;
 using ePizzaHub.Domain.Entities;
+using ePizzaHub.Infrastructure.Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ePizzaHub.Application.Implementation
 {
@@ -24,6 +28,22 @@ namespace ePizzaHub.Application.Implementation
             _userService = userService;
             _configuration = configuration;
         }
+
+        public async Task<TokenResponseDto> GenerateRefreshTokenAsync(RefreshTokenRequestDto request)
+        {
+            //check if access token is valid
+            var claimsPrincipal = GetTokenClaimPrincipal(request.AccessToken);
+
+            if (claimsPrincipal == null)
+                throw new InvalidAccessTokenException("The provided access token is not valid");
+
+            //check if refresh access token is valid
+
+            var emailAddress = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
+            var userDetails = await _userService.GetUserAsync(emailAddress);
+            return GenerateToken(userDetails);
+        }
+
         public async Task<TokenResponseDto> GenerateToken(string userName, string password)
         {
             var user = await _userService.GetUserAsync(userName);
@@ -61,9 +81,33 @@ namespace ePizzaHub.Application.Implementation
             return new TokenResponseDto
             {
                 AccessToken = token,
-                RefreshToken = "aaa"
+                RefreshToken = GenerateRefreshToken()
             };
         }
-        
+        private ClaimsPrincipal? GetTokenClaimPrincipal(string accessToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]);
+
+            var tokenValidationParameter = new TokenValidationParameters()
+            {
+                ValidateIssuer=true,
+                ValidateAudience=true,
+                ValidateLifetime=false,
+                ValidateIssuerSigningKey=true,
+                ValidIssuer=_configuration["Jwt:Issuer"],
+                ValidAudience=_configuration["Jwt:Audience"],
+                IssuerSigningKey=new SymmetricSecurityKey(key)
+            };
+            return tokenHandler.ValidateToken(accessToken, tokenValidationParameter, out _);
+        }
+        private string GenerateRefreshToken()
+        {
+            var randomBytes = new byte[64];
+            using var range = RandomNumberGenerator.Create();
+            range.GetBytes(randomBytes);
+
+            return Convert.ToBase64String(randomBytes);
+        }
     }
 }

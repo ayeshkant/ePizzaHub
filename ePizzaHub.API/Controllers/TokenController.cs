@@ -1,4 +1,5 @@
 ﻿using ePizzaHub.Application.Contracts;
+using ePizzaHub.Application.DTOs.Request;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,14 @@ namespace ePizzaHub.API.Controllers
         public async Task<IActionResult> GetToken(string userName, string password)
         {
             var response=await _tokenGeneratorService.GenerateToken(userName, password);
+
+            return Ok(response);
+        }
+        [HttpPost]
+        [Route("refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto request)
+        {
+            var response = await _tokenGeneratorService.GenerateRefreshTokenAsync(request);
 
             return Ok(response);
         }
