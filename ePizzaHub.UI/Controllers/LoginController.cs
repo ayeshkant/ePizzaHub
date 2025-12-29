@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace ePizzaHub.UI.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ITokenService _tokenService;

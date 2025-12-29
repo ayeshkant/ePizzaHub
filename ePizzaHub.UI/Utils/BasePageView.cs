@@ -20,7 +20,8 @@ namespace ePizzaHub.UI.Utils
                     {
                         Email = email,
                         Name = userName,
-                        UserId = Convert.ToInt32(userId)
+                        UserId = Convert.ToInt32(userId),
+                        PhoneNumber = "9999999999"
                     };
                 }
                 return null;

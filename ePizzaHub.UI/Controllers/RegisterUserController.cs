@@ -5,7 +5,7 @@ using System.Net.Http;
 
 namespace ePizzaHub.UI.Controllers
 {
-    public class RegisterUserController : Controller
+    public class RegisterUserController : BaseController
     {
         private readonly IHttpClientFactory _httpClientFactory;
         public RegisterUserController(IHttpClientFactory httpClientFactory)

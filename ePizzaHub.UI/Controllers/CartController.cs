@@ -1,12 +1,15 @@
 ﻿using ePizzaHub.UI.Constants;
 using ePizzaHub.UI.Models.Request;
 using ePizzaHub.UI.Models.Response;
+using ePizzaHub.UI.Models.ViewModels;
+using ePizzaHub.UI.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ePizzaHub.UI.Controllers
 {
     [Route("Cart")]
-    public class CartController : Controller
+    public class CartController : BaseController
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -77,6 +80,38 @@ namespace ePizzaHub.UI.Controllers
 
             if (itemCount != null) return itemCount.Data;
             return await Task.FromResult(0);
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> CheckOut()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CheckOut(AddressViewModel request)
+        {
+            if (ModelState.IsValid && CurrentUser!=null)
+            {
+                using var httpClient = _httpClientFactory.CreateClient(ApplicationConstants.ePizzaApiClient);
+                var cartItems = await httpClient
+                    .GetFromJsonAsync<ApiResponseModelDto<CartResponseDto>>($"/api/Cart/get-cart-detail?cartId={CartId}");
+
+                //update the cart table with user id
+                var updateCartRequest = new
+                {
+                    CartId = CartId,
+                    UserId = CurrentUser.UserId
+                };
+                var updateUserResponse = await httpClient.PutAsJsonAsync("api/Cart/update-cart-user", updateCartRequest);
+                updateUserResponse.EnsureSuccessStatusCode();
+
+                TempData.Set("Address",request);
+                TempData.Set("CartDetails",cartItems.Data);
+
+                return RedirectToAction("Index", "Payment");
+            }
+            return View(request);
         }
     }
 }

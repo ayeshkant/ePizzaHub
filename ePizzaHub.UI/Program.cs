@@ -1,4 +1,5 @@
 using ePizzaHub.UI.Constants;
+using ePizzaHub.UI.RazorPay;
 using ePizzaHub.UI.TokenHelpers;
 using ePizzaHub.UI.Utils.Contract;
 using ePizzaHub.UI.Utils.Implementation;
@@ -28,6 +29,7 @@ namespace ePizzaHub.UI
 
             builder.Services.AddScoped<HttpInterceptor>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IRazorPayService, RazorPayService>();
 
             builder.Services.AddHttpClient(ApplicationConstants.ePizzaApiClient, options =>
             {

@@ -64,7 +64,14 @@
                                 <td>@Model.GrantTotal</td>
                             </tr>
                         </table>
-                        <a class="btn btn-success">Checkout</a>
+                        @if (CurrentUser==null)
+                        {
+                            <a class="btn btn-danger" asp-controller="Login" asp-route-returnUrl="/Cart/CheckOut" asp-action="Login">Login</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-success" asp-controller="Cart" asp-action="CheckOut">Checkout</a>
+                        }
                     </div>
                 </div>
             </div>

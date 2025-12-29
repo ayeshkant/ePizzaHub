@@ -14,17 +14,17 @@ namespace ePizzaHub.UI.TokenHelpers
             HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            var token = _tokenService.GetToken();
+            var accessToken = _tokenService.GetToken();
 
-            if (!string.IsNullOrEmpty(token))
+            if (!string.IsNullOrEmpty(accessToken))
             {
-                var tokenExpiryTime = _tokenService.GetTokenExpiry(token);
+                var tokenExpiryTime = _tokenService.GetTokenExpiry(accessToken);
                 if (tokenExpiryTime<=DateTime.UtcNow.AddMinutes(2))
                 {
-                    await _tokenService.GetRefreshTokenAsync(token, "");
+                    await _tokenService.GetRefreshTokenAsync(accessToken, "");
                 }
 
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             }
             return await base.SendAsync(request, cancellationToken);
         }
