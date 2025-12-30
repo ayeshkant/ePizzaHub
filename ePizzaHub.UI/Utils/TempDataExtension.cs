@@ -13,7 +13,7 @@ namespace ePizzaHub.UI.Utils
         }
         public static T Get<T>(this ITempDataDictionary tempData, string key) where T : class
         {
-            tempData.TryGetValue(key, out var value);
+            object value = tempData.Peek(key);
             if (value != null)
                 return JsonSerializer.Deserialize<T>((string)value);
             return null;

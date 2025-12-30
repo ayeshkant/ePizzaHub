@@ -1,8 +1,10 @@
-﻿using ePizzaHub.Application.Contracts;
+﻿using AutoMapper;
+using ePizzaHub.Application.Contracts;
 using ePizzaHub.Application.CustomExceptions;
 using ePizzaHub.Application.DTOs.Request;
 using ePizzaHub.Application.DTOs.Response;
 using ePizzaHub.Domain.Entities;
+using ePizzaHub.Domain.Interfaces;
 using ePizzaHub.Infrastructure.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -22,11 +24,15 @@ namespace ePizzaHub.Application.Implementation
     {
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
+        private readonly IUserTokenService _userTokenService;
 
-        public TokenGeneratorService(IUserService userService, IConfiguration configuration)
+        public TokenGeneratorService(IUserService userService, IConfiguration configuration, IUserTokenService userTokenService, IMapper mapper)
         {
             _userService = userService;
             _configuration = configuration;
+            _userTokenService = userTokenService;
+            _mapper = mapper;
         }
 
         public async Task<TokenResponseDto> GenerateRefreshTokenAsync(RefreshTokenRequestDto request)
@@ -38,6 +44,7 @@ namespace ePizzaHub.Application.Implementation
                 throw new InvalidAccessTokenException("The provided access token is not valid");
 
             //check if refresh access token is valid
+            await ValidatePreviousTokenDetails(claimsPrincipal, request);
 
             var emailAddress = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
             var userDetails = await _userService.GetUserAsync(emailAddress);
@@ -55,7 +62,18 @@ namespace ePizzaHub.Application.Implementation
             if (!isPasswordValid)
                 throw new InvalidCredentialException("The password provided is invalid");
 
-            return GenerateToken(user);
+            var tokenResponseDto= GenerateToken(user);
+            if (tokenResponseDto is not null)
+            {
+                await _userTokenService.AddUserTokenAsync(new UserTokenRequestDto
+                {
+                    AccessToken = tokenResponseDto.AccessToken,
+                    RefreshToken=tokenResponseDto.RefreshToken,
+                    UserId=user.Id,
+                    RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(Convert.ToInt32(_configuration["Jwt:RefreshTokenExpiryInDays"]))
+                });
+            }
+            return tokenResponseDto;
         }
         private TokenResponseDto GenerateToken(UserDomain user)
         {
@@ -108,6 +126,24 @@ namespace ePizzaHub.Application.Implementation
             range.GetBytes(randomBytes);
 
             return Convert.ToBase64String(randomBytes);
+        }
+        private async Task ValidatePreviousTokenDetails(ClaimsPrincipal principal,RefreshTokenRequestDto refreshTokenRequestDto)
+        {
+            var previousTokenDetails =
+                await FetchPreviousTokenDetails(principal);
+
+            if (previousTokenDetails == null
+                || previousTokenDetails.RefreshToken != refreshTokenRequestDto.RefreshToken
+                 || previousTokenDetails.AccessToken != refreshTokenRequestDto.AccessToken
+                || previousTokenDetails.RefreshTokenExpiryTime < DateTime.UtcNow)
+                throw new Exception("Invalid Refresh Token Token");
+        }
+
+        private async Task<UserTokenResponseDto> FetchPreviousTokenDetails(ClaimsPrincipal principal)
+        {
+            var userId = principal.Claims.FirstOrDefault(x => x.Type == "UserId")!.Value;
+            var userTokenResponseDto = await _userTokenService.GetUserTokenAsync(Convert.ToInt32(userId));
+            return userTokenResponseDto;
         }
     }
 }

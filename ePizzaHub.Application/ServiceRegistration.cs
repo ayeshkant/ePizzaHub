@@ -18,6 +18,8 @@ namespace ePizzaHub.Application
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+            services.AddScoped<IUserTokenService, UserTokenService>();
+            services.AddScoped<IPaymentService, PaymentService>();
             // Register other application services here
             // services.AddTransient<IItemService, ItemService>();
             return services;

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ePizzaHub.Domain.Entities
+namespace ePizzaHub.Application.DTOs.Request
 {
-    public class UserTokenDomain
+    public class UserTokenRequestDto
     {
         public int Id { get; set; }
 

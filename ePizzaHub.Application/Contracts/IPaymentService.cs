@@ -1,5 +1,4 @@
 ﻿using ePizzaHub.Application.DTOs.Request;
-using ePizzaHub.Application.DTOs.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace ePizzaHub.Application.Contracts
 {
-    public interface IUserTokenService
+    public interface IPaymentService
     {
-        Task<bool> AddUserTokenAsync(UserTokenRequestDto userToken);
-        Task<UserTokenResponseDto> GetUserTokenAsync(int userId);
+        Task<string> CapturePaymentDetailsAsync(MakePaymentRequestDto requestDto);
     }
 }

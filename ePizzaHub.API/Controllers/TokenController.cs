@@ -1,5 +1,6 @@
 ﻿using ePizzaHub.Application.Contracts;
 using ePizzaHub.Application.DTOs.Request;
+using ePizzaHub.Application.Implementation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,12 @@ namespace ePizzaHub.API.Controllers
     public class TokenController : ControllerBase
     {
         private readonly ITokenGeneratorService _tokenGeneratorService;
+        private readonly IUserTokenService _userTokenService;
 
-        public TokenController(ITokenGeneratorService tokenGeneratorService)
+        public TokenController(ITokenGeneratorService tokenGeneratorService, IUserTokenService userTokenService)
         {
             _tokenGeneratorService = tokenGeneratorService;
+            _userTokenService = userTokenService;
         }
         [HttpGet]
         [Route("get/{userName}/{password}")]

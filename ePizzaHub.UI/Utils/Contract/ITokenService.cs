@@ -2,10 +2,10 @@
 {
     public interface ITokenService
     {
-        void SetToken(string token);
-        void SetRefreshToken(string refreshToken);
+        void SetAccessToken(string token);    
+        void SetRefreshToken(string token);
         string GetToken();
-        DateTime? GetTokenExpiry(string accessToken);
-        Task GetRefreshTokenAsync(string accessToken, string refreshToken);
+        DateTime? GetTokenExpiryTime(string currentToken);
+        Task<string> RefreshTokenAsync();
     }
 }

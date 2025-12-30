@@ -29,7 +29,7 @@ namespace ePizzaHub.Infrastructure.Repositories
                 _dBContext.UserTokens.RemoveRange(tokenDetails);
             }
 
-            await _dBContext.AddAsync(_mapper.Map<UserToken>(tokenDetails));
+            await _dBContext.AddAsync(_mapper.Map<UserToken>(userTokenDomain));
 
             return await _dBContext.SaveChangesAsync();
         }

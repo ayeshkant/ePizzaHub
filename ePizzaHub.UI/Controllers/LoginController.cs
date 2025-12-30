@@ -1,4 +1,5 @@
 ﻿using ePizzaHub.UI.Constants;
+using ePizzaHub.UI.Models.Request;
 using ePizzaHub.UI.Models.Response;
 using ePizzaHub.UI.Models.ViewModels;
 using ePizzaHub.UI.Utils.Contract;
@@ -36,8 +37,11 @@ namespace ePizzaHub.UI.Controllers
 
                 if (response is not null && response.IsSuccess)
                 {
-                    _tokenService.SetToken(response.Data.AccessToken);
+                    _tokenService.SetAccessToken(response.Data.AccessToken);
+                    _tokenService.SetRefreshToken(response.Data.RefreshToken);
+                    
                     var claims=await ProcessToken(response.Data.AccessToken);
+                    
                     return RedirectToAction("Index","Home");
                 }
             }

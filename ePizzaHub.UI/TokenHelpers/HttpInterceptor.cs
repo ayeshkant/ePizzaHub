@@ -18,13 +18,12 @@ namespace ePizzaHub.UI.TokenHelpers
 
             if (!string.IsNullOrEmpty(accessToken))
             {
-                var tokenExpiryTime = _tokenService.GetTokenExpiry(accessToken);
-                if (tokenExpiryTime<=DateTime.UtcNow.AddMinutes(2))
+                var tokenExpiryTime = _tokenService.GetTokenExpiryTime(accessToken);
+                if (tokenExpiryTime<=DateTime.UtcNow.AddMinutes(2) && request.RequestUri.AbsolutePath != "/api/Token/refresh")
                 {
-                    await _tokenService.GetRefreshTokenAsync(accessToken, "");
+                    await _tokenService.RefreshTokenAsync();
                 }
-
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                request.Headers.Add("Authorization", $"Bearer {accessToken}");
             }
             return await base.SendAsync(request, cancellationToken);
         }
