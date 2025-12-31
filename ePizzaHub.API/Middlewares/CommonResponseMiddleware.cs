@@ -13,11 +13,18 @@ namespace ePizzaHub.API.Middlewares
         }
         public async Task Invoke(HttpContext httpContext)
         {
-            var originalBody = httpContext.Response.Body;
             using var memoryStream = new MemoryStream();
-            httpContext.Response.Body = memoryStream;
+            var originalBody = httpContext.Response.Body;
+            try
+            {
+                httpContext.Response.Body = memoryStream;
+                await _next(httpContext);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
-            await _next(httpContext);
             if (httpContext.Response.ContentType!=null &&
                 httpContext.Response.ContentType.Contains("application/json"))
             {
